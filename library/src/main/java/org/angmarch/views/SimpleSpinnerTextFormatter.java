@@ -7,6 +7,11 @@ public class SimpleSpinnerTextFormatter implements SpinnerTextFormatter {
 
     @Override
     public Spannable format(Object item) {
+        // yg
+        if (item == null) {
+            return null;
+        }
+
         return new SpannableString(item.toString());
     }
 }
