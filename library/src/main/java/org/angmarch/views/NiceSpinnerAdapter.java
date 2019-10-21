@@ -53,14 +53,14 @@ public class NiceSpinnerAdapter<T> extends NiceSpinnerBaseAdapter {
         // if (position >= selectedIndex) {
         //     return items.get(position + 1);
         // } else {
-            return items.get(position);
+        return items.get(position);
         // }
     }
 
     @Override
     public T getItemInDataset(int position) {
         // yg
-        if (items == null) {
+        if (items == null || position < 0) {
             return null;
         }
         return items.get(position);

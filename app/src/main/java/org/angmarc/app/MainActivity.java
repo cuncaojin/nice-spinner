@@ -44,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
 
                 List<Person> people = new ArrayList<>();
 
-                people.add(new Person("Tony", "Stark"));
+                people.add(new Person("TonyTonyTonyTonyTonyTonyTony", "TonyTonyTonyTonyTonyTony"));
                 people.add(new Person("Steve", "Rogers"));
                 people.add(new Person("Bruce", "Banner"));
                 spinner2.attachDataSource(people);
@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity {
     private void setupDefault() {
         spinner1 = findViewById(R.id.nice_spinner);
         // List<String> dataset = new LinkedList<>(Arrays.asList("One"));
-        List<String> dataset = new LinkedList<>(Arrays.asList("One", "Two", "Three", "Four", "Five"));
+        List<String> dataset = new LinkedList<>(Arrays.asList("Oneddddddddddddddddd", "Twoafafa打发发发发啊发发发发发发发发发发发发发", "Three", "Four", "Five"));
         spinner1.attachDataSource(dataset);
         spinner1.setOnSpinnerItemSelectedListener(new OnSpinnerItemSelectedListener() {
             @Override
