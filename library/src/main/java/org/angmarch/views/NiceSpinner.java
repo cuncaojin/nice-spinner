@@ -9,6 +9,7 @@ import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.text.SpannableString;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.Gravity;
@@ -31,7 +32,6 @@ import androidx.interpolator.view.animation.LinearOutSlowInInterpolator;
 
 import java.util.Arrays;
 import java.util.List;
-
 
 /*
  * Copyright (C) 2015 Angelo Marchesin.
@@ -137,11 +137,22 @@ public class NiceSpinner extends AppCompatTextView {
     private void init(Context context, AttributeSet attrs) {
         Resources resources = getResources();
         TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.NiceSpinner);
+
+        //todo padding
         int defaultPadding = resources.getDimensionPixelSize(R.dimen.one_and_a_half_grid_unit);
+        int dimensionPixelSize = resources.getDimensionPixelSize(R.dimen.three_grid_unit);
+
+        int paddingLeft = typedArray.getDimensionPixelSize(R.styleable.NiceSpinner_textPaddingStart, defaultPadding);
+        int paddingRight = typedArray.getDimensionPixelSize(R.styleable.NiceSpinner_textPaddingEnd, defaultPadding);
+        int paddingTop = typedArray.getDimensionPixelSize(R.styleable.NiceSpinner_textPaddingTop, defaultPadding);
+        int paddingBottom = typedArray.getDimensionPixelSize(R.styleable.NiceSpinner_textPaddingBottom, defaultPadding);
+        // int paddingTop = resources.getDimensionPixelSize(R.dimen.ns_padding_top);
+        // int paddingRight = resources.getDimensionPixelSize(R.dimen.ns_padding_right);
+        // int paddingBottom = resources.getDimensionPixelSize(R.dimen.ns_padding_bottom);
 
         setGravity(Gravity.CENTER_VERTICAL | Gravity.START);
-        setPadding(resources.getDimensionPixelSize(R.dimen.three_grid_unit), defaultPadding, defaultPadding,
-                defaultPadding);
+        // setPadding(dimensionPixelSize, defaultPadding, defaultPadding, defaultPadding);
+        setPadding(paddingLeft, paddingTop, paddingRight, paddingBottom);
         setClickable(true);
         backgroundSelector = typedArray.getResourceId(R.styleable.NiceSpinner_backgroundSelector, R.drawable.selector);
         setBackgroundResource(backgroundSelector);
@@ -190,7 +201,7 @@ public class NiceSpinner extends AppCompatTextView {
         });
 
         isArrowHidden = typedArray.getBoolean(R.styleable.NiceSpinner_hideArrow, false);
-        arrowDrawableTint = typedArray.getColor(R.styleable.NiceSpinner_arrowTint, getResources().getColor(android.R.color.black));
+        arrowDrawableTint = typedArray.getColor(R.styleable.NiceSpinner_arrowTint, ContextCompat.getColor(getContext(), android.R.color.black));
         arrowDrawableResId = typedArray.getResourceId(R.styleable.NiceSpinner_arrowDrawable, R.drawable.arrow);
         dropDownListPaddingBottom =
                 typedArray.getDimensionPixelSize(R.styleable.NiceSpinner_dropDownListPaddingBottom, 0);
@@ -303,7 +314,9 @@ public class NiceSpinner extends AppCompatTextView {
     }
 
     private void setTextInternal(Object item) {
-        if (selectedTextFormatter != null) {
+        if (item == null) {
+            setText(null);
+        } else if ((selectedTextFormatter != null) && !(item instanceof SpannableString) && !(item instanceof String)) {
             setText(selectedTextFormatter.format(item));
         } else {
             setText(item.toString());
@@ -326,8 +339,6 @@ public class NiceSpinner extends AppCompatTextView {
             }
         }
     }
-
-
 
     /**
      * @deprecated use setOnSpinnerItemSelectedListener instead.
@@ -366,7 +377,7 @@ public class NiceSpinner extends AppCompatTextView {
             selectedIndex = 0;
             popupWindow.setAdapter(adapter);
             setTextInternal(adapter.getItemInDataset(selectedIndex));
-        }else{
+        } else {
             // yg
             selectedIndex = -1;
             popupWindow.setAdapter(adapter);
@@ -408,14 +419,13 @@ public class NiceSpinner extends AppCompatTextView {
         popupWindow.setAnchorView(this);
         popupWindow.show();
         final ListView listView = popupWindow.getListView();
-        if(listView != null) {
+        if (listView != null) {
             listView.setVerticalScrollBarEnabled(false);
             listView.setHorizontalScrollBarEnabled(false);
             listView.setVerticalFadingEdgeEnabled(false);
             listView.setHorizontalFadingEdgeEnabled(false);
         }
     }
-
 
     private int getPopUpHeight() {
         return Math.max(verticalSpaceBelow(), verticalSpaceAbove());
@@ -471,14 +481,16 @@ public class NiceSpinner extends AppCompatTextView {
         this.selectedTextFormatter = textFormatter;
     }
 
-
-    public void performItemClick( int position,boolean showDropdown) {
-        if(showDropdown) showDropDown();
+    public void performItemClick(int position, boolean showDropdown) {
+        if (showDropdown) {
+            showDropDown();
+        }
         setSelectedIndex(position);
     }
 
     /**
      * only applicable when popup is shown .
+     *
      * @param view
      * @param position
      * @param id
@@ -486,7 +498,7 @@ public class NiceSpinner extends AppCompatTextView {
     public void performItemClick(View view, int position, int id) {
         showDropDown();
         final ListView listView = popupWindow.getListView();
-        if(listView != null) {
+        if (listView != null) {
             listView.performItemClick(view, position, id);
         }
     }
@@ -498,7 +510,6 @@ public class NiceSpinner extends AppCompatTextView {
     public void setOnSpinnerItemSelectedListener(OnSpinnerItemSelectedListener onSpinnerItemSelectedListener) {
         this.onSpinnerItemSelectedListener = onSpinnerItemSelectedListener;
     }
-
 
 }
 

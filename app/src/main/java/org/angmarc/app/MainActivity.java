@@ -4,6 +4,7 @@ import android.os.Bundle;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.view.View;
+import android.widget.FrameLayout;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -30,6 +31,10 @@ public class MainActivity extends AppCompatActivity {
         setupDefault();
         setupTintedWithCustomClass();
         setupXml();
+
+        NiceSpinner sp = new NiceSpinner(this);
+
+        ((FrameLayout)findViewById(R.id.fl)).addView(sp);
     }
 
     private void setupXml() {
